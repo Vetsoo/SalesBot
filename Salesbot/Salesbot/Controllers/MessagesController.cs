@@ -7,6 +7,7 @@ using System.Web.Http;
 using AdaptiveCards;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Salesbot.Dialogs;
 
 namespace Salesbot
 {
@@ -21,110 +22,7 @@ namespace Salesbot
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                Activity reply = null;
-                Attachment attachment = null;
-                AdaptiveCard adaptiveCard = null;
-                if (activity.Text.ToLower().Contains("hey"))
-                {
-                    reply = activity.CreateReply($"Hey Jente, how can I help you?");
-                    await connector.Conversations.ReplyToActivityAsync(reply);
-                }
-                else if (activity.Text.ToLower().Contains(".net"))
-                {
-
-                    reply = activity.CreateReply($"The following consultants are interested : Rival, Kelvin and Kevin");
-                    reply.Attachments = new List<Attachment>();
-
-                    adaptiveCard = new AdaptiveCard();
-                    adaptiveCard.Body.Add(new TextBlock()
-                    {
-                        Text = "Kevin",
-                        Size = TextSize.Large,
-                        Weight = TextWeight.Bolder,
-                    });
-                    adaptiveCard.Body.Add(new TextBlock()
-                    {
-                        Text = "kevin.boets@axxes.com",
-                    });
-                    attachment = new Attachment()
-                    {
-                        ContentType = AdaptiveCard.ContentType,
-                        Content = adaptiveCard,
-
-                    };
-
-                    AdaptiveCard adaptiveCard2 = new AdaptiveCard();
-                    adaptiveCard2.Body.Add(new TextBlock()
-                    {
-                        Text = "Rival",
-                        Size = TextSize.Large,
-                        Weight = TextWeight.Bolder,
-                    });
-                    adaptiveCard2.Body.Add(new TextBlock()
-                    {
-                        Text = "rival@axxes.com",
-                    });
-                    Attachment attachment2 = new Attachment()
-                    {
-                        ContentType = AdaptiveCard.ContentType,
-                        Content = adaptiveCard2,
-
-                    };
-
-                    AdaptiveCard adaptiveCard3 = new AdaptiveCard();
-                    adaptiveCard3.Body.Add(new TextBlock()
-                    {
-                        Text = "Kelvin",
-                        Size = TextSize.Large,
-                        Weight = TextWeight.Bolder,
-                    });
-                    adaptiveCard3.Body.Add(new TextBlock()
-                    {
-                        Text = "kelvin@axxes.com",
-                    });
-                    Attachment attachment3 = new Attachment()
-                    {
-                        ContentType = AdaptiveCard.ContentType,
-                        Content = adaptiveCard3,
-
-                    };
-                    reply.Attachments.Add(attachment);
-                    reply.Attachments.Add(attachment2);
-                    reply.Attachments.Add(attachment3);
-                    await connector.Conversations.ReplyToActivityAsync(reply);
-                }
-                else if (activity.Text.ToLower().Contains("radius"))
-                {
-                    reply = activity.CreateReply($"The following consultants live within 30km radius : ");
-                    adaptiveCard = new AdaptiveCard();
-                    adaptiveCard.Body.Add(new TextBlock()
-                    {
-                        Text = "Kevin",
-                        Size = TextSize.Large,
-                        Weight = TextWeight.Bolder,
-                    });
-                    adaptiveCard.Body.Add(new TextBlock()
-                    {
-                        Text = "kevin.boets@axxes.com",
-                    });
-                    attachment = new Attachment()
-                    {
-                        ContentType = AdaptiveCard.ContentType,
-                        Content = adaptiveCard,
-
-                    };
-                    reply.Attachments.Add(attachment);
-                    await connector.Conversations.ReplyToActivityAsync(reply);
-
-                }
-                else
-                {
-                    reply = activity.CreateReply($"I don't understand what you mean.");
-                    await connector.Conversations.ReplyToActivityAsync(reply);
-
-                }
-                //await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                await Conversation.SendAsync(activity, () => new RootLuisDialog());
             }
             else
             {
