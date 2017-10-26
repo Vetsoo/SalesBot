@@ -4,6 +4,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
+using System.Collections.Generic;
 
 namespace Salesbot.Dialogs
 {
@@ -19,7 +20,29 @@ namespace Salesbot.Dialogs
         [LuisIntent("None")]
         public async Task None(IDialogContext context, LuisResult result)
         {
-            string message = $"Sorry, I did not understand '{result.Query}'. Type 'help' if you need assistance.";
+            string message = $"Sorry, dat heb ik niet helemaal begrepen. Typ 'help' om te zien wat ik kan doen.";
+
+            await context.PostAsync(message);
+
+            context.Wait(this.MessageReceived);
+        }
+
+        [LuisIntent("Help")]
+        public async Task Help(IDialogContext context, LuisResult result)
+        {
+            string message = $"Ik kan effecient op zoek gaan naar profielen voor bepaalde vacatures.Probeer me vragen te stellen zoals: 'Ik ben op zoek naar consultants met ervaring in .net mvc, azure, web development' of Ik heb een vacature met de volgende keywords: java, spring, scrum, agile'.";
+
+            await context.PostAsync(message);
+
+            context.Wait(this.MessageReceived);
+        }
+
+        [LuisIntent("Greeting")]
+        public async Task Greeting(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        {
+            var input = await activity;
+            
+            string message = $"Hey {input.From.Name}! Wat kan ik voor je doen?";
 
             await context.PostAsync(message);
 
@@ -27,29 +50,25 @@ namespace Salesbot.Dialogs
         }
 
         [LuisIntent("Find profiles for opportunity")]
-        private async Task FindProfilesForOpportunity(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        private async Task FindProfilesForOpportunity(IDialogContext context, LuisResult result)
         {
-            var message = await activity;
+            var keywords = new List<string>();
 
-            EntityRecommendation keywordsEntity;
-
-            if (result.TryFindEntity(EntityKeywords, out keywordsEntity))
+            if (result.Entities != null)
             {
-                
+                foreach (var entity in result.Entities)
+                {
+                    if (entity.Type == EntityKeywords)
+                        keywords.Add(entity.Entity);
+                }
             }
 
-            await context.PostAsync($"Hey {message.From.Name}! Ik ben op zoek naar geschikte kandidaten voor de volgende keywords: ...");
+            var message = $"Ik heb de volgende keywords gevonden: {string.Join(", ", keywords)}";
 
-            //EntityRecommendation cityEntityRecommendation;
+            await context.PostAsync(message);
 
-            //if (result.TryFindEntity(EntityGeographyCity, out cityEntityRecommendation))
-            //{
-            //    cityEntityRecommendation.Type = "Destination";
-            //}
-
-            //var hotelsFormDialog = new FormDialog<HotelsQuery>(hotelsQuery, this.BuildHotelsForm, FormOptions.PromptInStart, result.Entities);
-
-            //context.Call(hotelsFormDialog, this.ResumeAfterHotelsFormDialog);
+            context.Wait(this.MessageReceived);
         }
+
     }
 }
