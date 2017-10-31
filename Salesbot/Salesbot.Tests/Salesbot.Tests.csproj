@@ -75,10 +75,6 @@
       <Project>{c6f85ea0-7f0e-4afc-b684-930dcb736bcb}</Project>
       <Name>SalesBot.Azure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Salesbot\Salesbot.csproj">
-      <Project>{dd2e3765-7d5e-4d12-8ecd-19b5ba7e5a32}</Project>
-      <Name>Salesbot</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Azure.Documents.Linq;
-using Salesbot.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CosmosDb\ConsultantInfo.cs" />
     <Compile Include="CosmosDb\ConsultantInfoRepository.cs" />
     <Compile Include="CosmosDb\CosmosDbRepository.cs" />
     <Compile Include="CosmosDb\CosmosDbSettings.cs" />

@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Autofac;
 using SalesBot.Azure.CosmosDb;
 using System.Threading.Tasks;
-using Salesbot.Models;
 using System.Linq;
 
 namespace Salesbot.Tests
@@ -29,7 +28,8 @@ namespace Salesbot.Tests
                     Email = "kris.bulte@axxes.com",
                     Name = "Kris Bulté",
                     Interests = new string[] { "architecture", "containers", "serverless" },
-                    Skills = new string[] { "asp.net" }
+                    Skills = new string[] { "asp.net" },
+                    Location = new Microsoft.Azure.Documents.Spatial.Point(3.820341, 50.687912)
                 };
                 consultantInfoRepository.AddOrUpdateAsync(consultantInfo, null).GetAwaiter();
             }
@@ -41,7 +41,7 @@ namespace Salesbot.Tests
             var consultantInfoRepository = _container.Resolve<IConsultantInfoRepository>();
             var result = await consultantInfoRepository.GetAllConsultantInfo();
 
-            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Count() > 0);
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace Salesbot.Tests
             var consultantInfoRepository = _container.Resolve<IConsultantInfoRepository>();
             var result = await consultantInfoRepository.QueryConsultantInfoBySkill("asp.net");
 
-            Assert.IsTrue(result.Any(x => x.Skills.Contains("ASP.NET", StringComparer.CurrentCultureIgnoreCase)));
+            Assert.IsTrue(result.All(x => x.Skills.Contains("ASP.NET", StringComparer.CurrentCultureIgnoreCase)));
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace Salesbot.Tests
             var consultantInfoRepository = _container.Resolve<IConsultantInfoRepository>();
             var result = await consultantInfoRepository.QueryConsultantInfoByInterest("containers");
 
-            Assert.IsTrue(result.Any(x => x.Interests.Contains("containers", StringComparer.CurrentCultureIgnoreCase)));
+            Assert.IsTrue(result.All(x => x.Interests.Contains("containers", StringComparer.CurrentCultureIgnoreCase)));
         }
     }
 }

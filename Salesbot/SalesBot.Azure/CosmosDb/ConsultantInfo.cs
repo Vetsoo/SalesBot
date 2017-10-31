@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Azure.Documents.Spatial;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Salesbot.Models
+namespace SalesBot.Azure.CosmosDb
 {
     public class ConsultantInfo
     {
@@ -16,5 +17,9 @@ namespace Salesbot.Models
 
         [JsonProperty("interests")]
         public ICollection<string> Interests { get; set; }
+
+        [JsonProperty("location")]
+        public Point Location { get; set; }
     }
 }
+
