@@ -1,11 +1,11 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Autofac;
-using SalesBot.Azure.CosmosDb;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
+using Autofac;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SalesBot.Azure.CosmosDb;
 
-namespace Salesbot.Tests
+namespace Salesbot.Tests.Integration
 {
     [TestClass]
     public class ConsultantInfoTests

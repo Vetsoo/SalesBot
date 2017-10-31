@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Salesbot.Dialogs
 {
-    [LuisModel("7805cd93-3419-42ab-8948-e58870860015", "6458dacf5b4f403295125bd2dcf4330d", domain: "westeurope.api.cognitive.microsoft.com", staging: true, verbose: true)]
+    [LuisModel("#modelId", "#subscriptionKey", domain: "#domain", staging: true, verbose: true)]
     [Serializable]
     public class RootLuisDialog : LuisDialog<object>
     {
